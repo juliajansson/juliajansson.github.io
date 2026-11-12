@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Julia Jansson Valter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0f1f2e;
+  --ink-muted: #4a5f72;
+  --ink-faint: #8fa3b2;
+  --paper: #f5f7f9;
+  --paper-alt: #edf1f5;
+  --accent: #1b5fa3;
+  --accent-light: #ddeaf7;
+  --accent-mid: #4d8dcc;
+  --rule: #d4dde6;
+  --serif: 'DM Serif Display', Georgia, serif;
+  --sans: 'DM Sans', system-ui, sans-serif;
+  --max: 760px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.65;font-weight:300}
+
+/* NAV */
+nav{position:sticky;top:0;background:rgba(245,247,249,0.93);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule);z-index:100;padding:0 2rem}
+.nav-inner{max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:52px;gap:1.5rem}
+.nav-name{font-family:var(--serif);font-size:1.05rem;color:var(--ink);text-decoration:none;white-space:nowrap;flex-shrink:0}
+.nav-links{display:flex;gap:1.25rem;list-style:none;flex-wrap:wrap}
+.nav-links a{font-size:0.8rem;font-weight:400;color:var(--ink-muted);text-decoration:none;letter-spacing:0.01em;transition:color 0.15s;white-space:nowrap;padding:4px 0;border-bottom:1.5px solid transparent;transition:color 0.15s,border-color 0.15s}
+.nav-links a:hover,.nav-links a.active{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* PAGES */
+.page{display:none;max-width:var(--max);margin:0 auto;padding:0 2rem 6rem}
+.page.visible{display:block}
+
+/* HERO */
+.hero{display:grid;grid-template-columns:1fr auto;gap:3rem;padding:4rem 0 3rem;align-items:start;border-bottom:1px solid var(--rule)}
+.hero h1{font-family:var(--serif);font-size:clamp(2.2rem,5vw,3rem);font-weight:400;line-height:1.1;color:var(--ink);margin-bottom:0.4rem}
+.hero-title{font-size:0.88rem;color:var(--ink-muted);font-weight:400;margin-bottom:1.4rem;letter-spacing:0.01em}
+.hero-title strong{color:var(--accent);font-weight:500}
+.hero p{font-size:0.93rem;color:var(--ink-muted);max-width:480px;margin-bottom:1.6rem;line-height:1.78}
+.hero-links{display:flex;gap:0.6rem;flex-wrap:wrap}
+.pill-link{display:inline-block;font-size:0.78rem;font-weight:400;padding:0.35rem 0.85rem;border:1px solid var(--rule);border-radius:100px;color:var(--ink-muted);text-decoration:none;transition:border-color 0.15s,color 0.15s,background 0.15s}
+.pill-link:hover{border-color:var(--accent-mid);color:var(--accent);background:var(--accent-light)}
+.hero-photo{width:140px;height:140px;border-radius:50%;object-fit:cover;border:3px solid var(--paper-alt);outline:1px solid var(--rule);flex-shrink:0;margin-top:0.5rem}
+
+/* SECTIONS */
+section{padding:2.6rem 0;border-bottom:1px solid var(--rule)}
+section:last-child{border-bottom:none}
+.section-label{font-size:0.7rem;font-weight:500;letter-spacing:0.11em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:1.4rem}
+
+/* PAGE HEADER (inner pages) */
+.page-header{padding:3.2rem 0 2.4rem;border-bottom:1px solid var(--rule)}
+.page-header h1{font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.4rem);font-weight:400;line-height:1.15;color:var(--ink)}
+.page-header .sub{font-size:0.85rem;color:var(--ink-muted);margin-top:0.5rem}
+
+/* NEWS */
+.news-list{display:flex;flex-direction:column;gap:1rem}
+.news-item{display:grid;grid-template-columns:100px 1fr;gap:1rem;align-items:baseline}
+.news-date{font-size:0.78rem;color:var(--ink-faint);font-weight:400;white-space:nowrap}
+.news-body{font-size:0.9rem;color:var(--ink);line-height:1.6}
+
+/* PUBLICATIONS */
+.pub-list{display:flex;flex-direction:column;gap:0}
+.pub-item{display:grid;grid-template-columns:28px 1fr auto;gap:0.75rem 1rem;align-items:baseline;padding:1.3rem 0;border-bottom:1px solid var(--rule)}
+.pub-item:last-child{border-bottom:none}
+.pub-num{font-size:0.78rem;color:var(--ink-faint);font-weight:400;text-align:right;padding-top:0.15rem}
+.pub-title{font-family:var(--serif);font-style:italic;font-size:0.98rem;font-weight:400;color:var(--ink);line-height:1.35;margin-bottom:0.3rem}
+.pub-authors{font-size:0.8rem;color:var(--ink-muted);line-height:1.5;margin-bottom:0.15rem}
+.pub-authors strong{color:var(--ink);font-weight:500}
+.pub-venue{font-size:0.8rem;color:var(--ink-muted)}
+.pub-venue em{font-style:italic;color:var(--ink)}
+.doi-link{font-size:0.75rem;color:var(--accent);text-decoration:none;white-space:nowrap;padding:0.22rem 0.6rem;border:1px solid var(--accent-light);border-radius:100px;transition:background 0.15s,border-color 0.15s;align-self:start;margin-top:0.2rem}
+.doi-link:hover{background:var(--accent-light);border-color:var(--accent-mid)}
+
+/* RESEARCH SECTION ON HOMEPAGE */
+.research-desc{font-size:0.93rem;color:var(--ink-muted);line-height:1.8;max-width:600px}
+.research-desc a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-light)}
+.research-desc a:hover{border-bottom-color:var(--accent)}
+.keywords{display:flex;flex-wrap:wrap;gap:0.45rem;margin-top:1.2rem}
+.kw{font-size:0.76rem;padding:0.28rem 0.72rem;background:var(--accent-light);color:var(--accent);border-radius:100px;font-weight:500}
+
+/* ABOUT GRID */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem 3rem;font-size:0.88rem;color:var(--ink-muted);line-height:1.75}
+.about-grid h4{font-size:0.7rem;font-weight:500;letter-spacing:0.09em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:0.6rem}
+.about-grid a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-light)}
+.about-grid a:hover{border-bottom-color:var(--accent)}
+code{font-family:'SFMono-Regular',Consolas,monospace;font-size:0.82em;background:var(--paper-alt);padding:0.1em 0.4em;border-radius:4px;color:var(--ink);border:1px solid var(--rule)}
+
+/* TIMELINE (education, conferences) */
+.timeline{display:flex;flex-direction:column;gap:0}
+.tl-item{display:grid;grid-template-columns:110px 1fr;gap:1rem 1.4rem;padding:1.5rem 0;border-bottom:1px solid var(--rule);align-items:start}
+.tl-item:last-child{border-bottom:none}
+.tl-year{font-size:0.78rem;color:var(--ink-faint);font-weight:400;padding-top:0.2rem;white-space:nowrap}
+.tl-body h3{font-size:0.95rem;font-weight:500;color:var(--ink);line-height:1.4;margin-bottom:0.2rem}
+.tl-body .inst{font-size:0.82rem;color:var(--ink-muted);margin-bottom:0.4rem}
+.tl-body p{font-size:0.85rem;color:var(--ink-muted);line-height:1.65}
+.tl-body a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-light)}
+.tl-body a:hover{border-bottom-color:var(--accent)}
+.tl-tag{display:inline-block;font-size:0.72rem;padding:0.18rem 0.55rem;border-radius:100px;margin-top:0.5rem;font-weight:500}
+.tag-talk{background:#e8f4ee;color:#1a6b41}
+.tag-poster{background:#fef3e2;color:#8a5a00}
+.tag-visit{background:#ede9fb;color:#4c35a0}
+.tag-org{background:#fce8f0;color:#8b2255}
+.tag-award{background:#e3f1fc;color:#0d4f85}
+
+/* GRANTS TABLE */
+.grant-list{display:flex;flex-direction:column;gap:0}
+.grant-item{display:grid;grid-template-columns:88px 1fr auto;gap:0.6rem 1.2rem;align-items:baseline;padding:1.1rem 0;border-bottom:1px solid var(--rule)}
+.grant-item:last-child{border-bottom:none}
+.grant-date{font-size:0.78rem;color:var(--ink-faint);font-weight:400;white-space:nowrap}
+.grant-body h3{font-size:0.9rem;font-weight:500;color:var(--ink);margin-bottom:0.15rem}
+.grant-body p{font-size:0.82rem;color:var(--ink-muted);line-height:1.55}
+.grant-amt{font-size:0.82rem;font-weight:500;color:var(--accent);white-space:nowrap;text-align:right}
+
+/* TEACHING */
+.teach-block{margin-bottom:0.4rem}
+.teach-block h3{font-size:0.88rem;font-weight:500;color:var(--ink-faint);letter-spacing:0.06em;text-transform:uppercase;font-size:0.7rem;margin-bottom:0.9rem}
+.teach-row{display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:baseline;padding:0.85rem 0;border-bottom:1px solid var(--rule)}
+.teach-row:last-child{border-bottom:none}
+.teach-name{font-size:0.9rem;color:var(--ink)}
+.teach-name .code{font-size:0.78rem;color:var(--ink-faint);margin-left:0.4rem}
+.teach-years{font-size:0.78rem;color:var(--ink-muted);white-space:nowrap}
+.supervise-item{padding:1rem 0;border-bottom:1px solid var(--rule)}
+.supervise-item:last-child{border-bottom:none}
+.supervise-item .s-name{font-size:0.9rem;font-weight:500;color:var(--ink)}
+.supervise-item .s-meta{font-size:0.82rem;color:var(--ink-muted);margin-top:0.15rem;line-height:1.55}
+.level-label{font-size:0.7rem;font-weight:500;letter-spacing:0.09em;text-transform:uppercase;color:var(--ink-faint);margin:1.6rem 0 0.8rem}
+.level-label:first-child{margin-top:0}
+
+/* INLINE NOTE */
+.note{font-size:0.82rem;color:var(--ink-faint);font-style:italic;margin-bottom:1.4rem;line-height:1.6}
+
+/* SUBSECTION H2 */
+.sub-h2{font-family:var(--serif);font-size:1.2rem;font-weight:400;color:var(--ink);margin:2.2rem 0 1.1rem;padding-bottom:0.5rem;border-bottom:1px solid var(--rule)}
+.sub-h2:first-of-type{margin-top:0}
+
+/* THESES / REPORTS */
+.thesis-item{padding:1.1rem 0;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:28px 1fr auto;gap:0.6rem 1rem;align-items:baseline}
+.thesis-item:last-child{border-bottom:none}
+
+/* FOOTER */
+footer{max-width:var(--max);margin:0 auto;padding:1.8rem 2rem 3rem;font-size:0.76rem;color:var(--ink-faint);display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;border-top:1px solid var(--rule)}
+footer a{color:var(--ink-faint);text-decoration:none}
+footer a:hover{color:var(--accent)}
+
+/* GENERIC INLINE LINK */
+a.ilink{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-light)}
+a.ilink:hover{border-bottom-color:var(--accent)}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  .page{padding:0 1.25rem 4rem}
+  .hero{grid-template-columns:1fr;padding:2.5rem 0 2rem}
+  .hero-photo{width:88px;height:88px}
+  .hero-photo-wrap{order:-1}
+  .news-item{grid-template-columns:1fr;gap:0.15rem}
+  .pub-item{grid-template-columns:24px 1fr;gap:0.5rem 0.75rem}
+  .pub-item .doi-link{grid-column:2}
+  .about-grid{grid-template-columns:1fr}
+  .tl-item{grid-template-columns:1fr;gap:0.3rem}
+  .tl-year{padding-top:0}
+  .grant-item{grid-template-columns:1fr;gap:0.2rem}
+  .grant-amt{text-align:left}
+  .thesis-item{grid-template-columns:24px 1fr}
+  nav{padding:0 1.25rem}
+  .nav-links{gap:0.75rem}
+  .nav-links a{font-size:0.75rem}
+  footer{padding:1.5rem 1.25rem 2.5rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-name" href="#" onclick="showPage('home');return false">Julia Jansson Valter</a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home');return false" data-page="home">About</a></li>
+      <li><a href="#" onclick="showPage('publications');return false" data-page="publications">Publications</a></li>
+      <li><a href="#" onclick="showPage('conferences');return false" data-page="conferences">Conferences</a></li>
+      <li><a href="#" onclick="showPage('education');return false" data-page="education">Education</a></li>
+      <li><a href="#" onclick="showPage('grants');return false" data-page="grants">Grants</a></li>
+      <li><a href="#" onclick="showPage('teaching');return false" data-page="teaching">Teaching</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════ HOME ══════════════════════════════ -->
+<div id="page-home" class="page visible">
+  <div class="hero">
+    <div class="hero-text">
+      <h1>Julia Jansson Valter</h1>
+      <p class="hero-title">PhD student in Spatial Statistics &middot; <strong>Chalmers University of Technology</strong></p>
+      <p>Working at the intersection of machine learning and spatial statistics, developing <em>point process learning</em> and spatio-temporal models for earthquake forecasting. Supervised by <a class="ilink" href="https://www.gu.se/en/about/find-staff/ottmarcronie" target="_blank">Ottmar Cronie</a> and <a class="ilink" href="https://www.chalmers.se/en/persons/aila/" target="_blank">Aila Särkkä</a>.</p>
+      <div class="hero-links">
+        <a class="pill-link" href="https://scholar.google.com/citations?view_op=list_works&hl=en&user=x-VK1dUAAAAJ" target="_blank">Google Scholar</a>
+        <a class="pill-link" href="https://arxiv.org/a/jansson_j_1.html" target="_blank">arXiv</a>
+        <a class="pill-link" href="https://www.researchgate.net/profile/Julia-Jansson-3" target="_blank">ResearchGate</a>
+        <a class="pill-link" href="https://orcid.org/0000-0001-7876-9651" target="_blank">ORCID</a>
+        <a class="pill-link" href="https://github.com/juliajansson" target="_blank">GitHub</a>
+        <a class="pill-link" href="https://linkedin.com/in/juliajansson" target="_blank">LinkedIn</a>
+      </div>
+    </div>
+    <div class="hero-photo-wrap">
+      <img class="hero-photo" src="https://juliajanssonvalter.wordpress.com/wp-content/uploads/2024/04/20240425_093826-edited.jpg" alt="Julia Jansson Valter">
+    </div>
+  </div>
+
+  <section>
+    <p class="section-label">Research</p>
+    <p class="research-desc">Spatial statistics studies how events are distributed across space. My work develops <em>point process learning</em> — a framework bridging classical spatial statistics with modern machine learning — applied to earthquake sequences, disease spread, and ecological point patterns.</p>
+    <div class="keywords">
+      <span class="kw">Point processes</span>
+      <span class="kw">Spatial statistics</span>
+      <span class="kw">Machine learning</span>
+      <span class="kw">Spatio-temporal models</span>
+      <span class="kw">Earthquake forecasting</span>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Recent news</p>
+    <div class="news-list">
+      <div class="news-item">
+        <span class="news-date">Jul 2026</span>
+        <span class="news-body">New paper in <em>Environmetrics</em>: <a class="ilink" href="https://doi.org/10.1002/env.70113" target="_blank">"The Q-Score: A Magnitude-Weighted Goodness-of-Fit Score for Earthquake Forecasting"</a></span>
+      </div>
+      <div class="news-item">
+        <span class="news-date">May 2026</span>
+        <span class="news-body">New paper in <em>Spatial Statistics</em>: <a class="ilink" href="https://doi.org/10.1016/j.spasta.2026.100991" target="_blank">"Takacs-Fiksel estimation as a special case of Point Process Learning"</a></span>
+      </div>
+      <div class="news-item">
+        <span class="news-date">Sep 2025</span>
+        <span class="news-body">Talk at <a class="ilink" href="https://ecsia2025.karlin.mff.cuni.cz/" target="_blank">ECSIA 2025</a> in Prague on earthquake forecasting goodness-of-fit.</span>
+      </div>
+      <div class="news-item">
+        <span class="news-date">Jan 2025</span>
+        <span class="news-body">Research visit at <a class="ilink" href="https://statistics.ucla.edu/" target="_blank">UCLA Statistics</a>, working with Rick Schoenberg's group on spatio-temporal earthquake models.</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">About</p>
+    <div class="about-grid">
+      <div>
+        <h4>Languages</h4>
+        <p>Swedish, English, Hungarian, some German</p>
+      </div>
+      <div>
+        <h4>Programming</h4>
+        <p>Fluent in <code>R</code>. Intermediate: <code>python</code> <code>Mathematica</code> <code>Haskell</code> <code>julia</code>. Some <code>C</code> <code>Java</code> <code>Matlab</code>.</p>
+      </div>
+      <div>
+        <h4>Hobbies</h4>
+        <p>Violin in <a href="https://vastkustfolk.chs.chalmers.se/" target="_blank">Västkustfolk</a>. Singing in the <a href="https://chalmerssangkor.se/" target="_blank">Chalmers University Choir</a>.</p>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <p>Chalmers University of Technology, Gothenburg, Sweden<br>ORCID <a href="https://orcid.org/0000-0001-7876-9651" target="_blank">0000-0001-7876-9651</a></p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════ PUBLICATIONS ══════════════════════════════ -->
+<div id="page-publications" class="page">
+  <div class="page-header">
+    <h1>Publications</h1>
+    <p class="sub note" style="margin-top:0.6rem;margin-bottom:0">In 2025 I changed my last name from <em>Jansson</em> to <em>Jansson Valter</em>, so I publish under both names.</p>
+  </div>
+
+  <section style="padding-top:2rem">
+    <h2 class="sub-h2">Peer-reviewed articles</h2>
+    <div class="pub-list">
+      <div class="pub-item">
+        <span class="pub-num">1</span>
+        <div>
+          <p class="pub-title">The Q-Score: A Magnitude-Weighted Goodness-of-Fit Score for Earthquake Forecasting</p>
+          <p class="pub-authors"><strong>Jansson Valter, J.</strong>, Arjon, A., Serafini, F., Schoenberg, F.</p>
+          <p class="pub-venue"><em>Environmetrics</em>, 2026</p>
+        </div>
+        <a class="doi-link" href="https://doi.org/10.1002/env.70113" target="_blank">DOI →</a>
+      </div>
+      <div class="pub-item">
+        <span class="pub-num">2</span>
+        <div>
+          <p class="pub-title">Takacs-Fiksel Estimation as a Special Case of Point Process Learning</p>
+          <p class="pub-authors"><strong>Jansson Valter, J.</strong>, Cronie, O.</p>
+          <p class="pub-venue"><em>Spatial Statistics</em>, 2026</p>
+        </div>
+        <a class="doi-link" href="https://doi.org/10.1016/j.spasta.2026.100991" target="_blank">DOI →</a>
+      </div>
+      <div class="pub-item">
+        <span class="pub-num">3</span>
+        <div>
+          <p class="pub-title">Point Process Learning: A Cross-Validation-Based Statistical Framework for Point Processes</p>
+          <p class="pub-authors"><strong>Jansson, J.</strong>, Biscio, C.A.N., Moradi, M., Cronie, O.</p>
+          <p class="pub-venue">In: <em>Methodological and Applied Statistics and Demography I</em>. SIS 2024. Springer, 2025</p>
+        </div>
+        <a class="doi-link" href="https://doi.org/10.1007/978-3-031-64346-0_35" target="_blank">DOI →</a>
+      </div>
+      <div class="pub-item">
+        <span class="pub-num">4</span>
+        <div>
+          <p class="pub-title">Discussion of "Marked Spatial Point Processes: Current State and Extensions to Point Processes on Linear Networks"</p>
+          <p class="pub-authors">Cronie, O., <strong>Jansson, J.</strong>, Konstantinou, K.</p>
+          <p class="pub-venue"><em>Journal of Agricultural, Biological and Environmental Statistics</em>, 2024</p>
+        </div>
+        <a class="doi-link" href="https://doi.org/10.1007/s13253-024-00606-0" target="_blank">DOI →</a>
+      </div>
+      <div class="pub-item">
+        <span class="pub-num">5</span>
+        <div>
+          <p class="pub-title">Level-p-complexity of Boolean Functions Using Thinning, Memoization, and Polynomials</p>
+          <p class="pub-authors"><strong>Jansson, J.</strong>, Jansson, P.</p>
+          <p class="pub-venue"><em>Journal of Functional Programming</em>, 33, e13, 2023</p>
+        </div>
+        <a class="doi-link" href="https://doi.org/10.1017/S0956796823000102" target="_blank">DOI →</a>
+      </div>
+    </div>
+
+    <h2 class="sub-h2" style="margin-top:2.4rem">Working papers &amp; preprints</h2>
+    <div class="pub-list">
+      <div class="pub-item">
+        <span class="pub-num">1</span>
+        <div>
+          <p class="pub-title">Comparison of Point Process Learning and Its Special Case Takacs-Fiksel Estimation</p>
+          <p class="pub-authors"><strong>Jansson, J.</strong>, Cronie, O.</p>
+          <p class="pub-venue">Preprint on arXiv, 2024</p>
+        </div>
+        <a class="doi-link" href="https://arxiv.org/a/jansson_j_1.html" target="_blank">arXiv →</a>
+      </div>
+    </div>
+
+    <h2 class="sub-h2" style="margin-top:2.4rem">Theses</h2>
+    <div class="pub-list">
+      <div class="thesis-item">
+        <span class="pub-num">1</span>
+        <div>
+          <p class="pub-title" style="font-size:0.93rem">Statistical Properties of Point Process Learning for Gibbs Processes</p>
+          <p class="pub-authors"><strong>Jansson, J.</strong> &mdash; Licentiate thesis, Chalmers University of Technology, 2024</p>
+        </div>
+        <a class="doi-link" href="https://research.chalmers.se/publication/543953" target="_blank">View →</a>
+      </div>
+      <div class="thesis-item">
+        <span class="pub-num">2</span>
+        <div>
+          <p class="pub-title" style="font-size:0.93rem">Level-p-complexity for Boolean Functions</p>
+          <p class="pub-authors"><strong>Jansson, J.</strong> &mdash; MSc thesis, Chalmers University of Technology, 2022</p>
+        </div>
+        <a class="doi-link" href="https://juliajanssonvalter.wordpress.com/wp-content/uploads/2022/10/master_thesis_julia_jansson_220527.pdf" target="_blank">PDF →</a>
+      </div>
+      <div class="thesis-item">
+        <span class="pub-num">3</span>
+        <div>
+          <p class="pub-title" style="font-size:0.93rem">Bortom normalfördelningen</p>
+          <p class="pub-authors">Berger, E., Ekgrim, C., <strong>Jansson, J.</strong>, Larsson, D. &mdash; BSc thesis, Chalmers, 2020</p>
+        </div>
+        <a class="doi-link" href="https://juliajanssonvalter.wordpress.com/wp-content/uploads/2022/10/bortom-normalfordelningen.pdf" target="_blank">PDF →</a>
+      </div>
+      <div class="thesis-item">
+        <span class="pub-num">4</span>
+        <div>
+          <p class="pub-title" style="font-size:0.93rem">A Computational Exploration of Newton's Iteration Function for a Complex Polynomial</p>
+          <p class="pub-authors"><strong>Jansson, J.</strong> &mdash; High-school thesis, Hvitfeldtska Gymnasiet, 2017</p>
+        </div>
+        <a class="doi-link" href="https://juliajanssonvalter.wordpress.com/wp-content/uploads/2022/10/a_computational_exploration_of_newton_s_iteration_function_for_a_complex_polynomial.pdf" target="_blank">PDF →</a>
+      </div>
+    </div>
+
+    <h2 class="sub-h2" style="margin-top:2.4rem">Research reports</h2>
+    <div class="pub-list">
+      <div class="thesis-item">
+        <span class="pub-num">1</span>
+        <div>
+          <p class="pub-title" style="font-size:0.93rem">Anomaly Detection at CERN Websites</p>
+          <p class="pub-authors"><strong>Jansson, J.</strong> &mdash; CERN, 2021</p>
+        </div>
+        <a class="doi-link" href="https://juliajanssonvalter.wordpress.com/wp-content/uploads/2022/10/final_report_julia_jansson_2021-07-30.pdf" target="_blank">PDF →</a>
+      </div>
+      <div class="thesis-item">
+        <span class="pub-num">2</span>
+        <div>
+          <p class="pub-title" style="font-size:0.93rem">Developing a Method of Measuring Blood Pressure Using a Video Recording</p>
+          <p class="pub-authors"><strong>Jansson, J.</strong>, Muhammed, H.H. &mdash; Research Academy for Young Scientists, 2016</p>
+        </div>
+        <a class="doi-link" href="https://juliajanssonvalter.wordpress.com/wp-content/uploads/2022/10/juliajanssonrays2016.pdf" target="_blank">PDF →</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════ CONFERENCES ══════════════════════════════ -->
+<div id="page-conferences" class="page">
+  <div class="page-header">
+    <h1>Conferences &amp; research visits</h1>
+  </div>
+
+  <section style="padding-top:2rem">
+    <div class="timeline">
+
+      <div class="tl-item">
+        <span class="tl-year">Sep 2025</span>
+        <div class="tl-body">
+          <h3><a href="https://ecsia2025.karlin.mff.cuni.cz/" target="_blank" class="ilink">ECSIA 2025</a> &mdash; Prague, Czech Republic</h3>
+          <p class="inst">European Conference on Spatial and Image Analysis</p>
+          <p>"The Q-score: a magnitude-weighted goodness-of-fit score for earthquake forecasting"</p>
+          <span class="tl-tag tag-talk">Talk</span>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <span class="tl-year">Jul 2025</span>
+        <div class="tl-body">
+          <h3><a href="https://www.elsevier.com/events/conferences/all/spatial-statistics" target="_blank" class="ilink">Spatial Statistics 2025</a> &mdash; Netherlands</h3>
+          <p>"Comparing Point Process Learning to Takacs-Fiksel estimation and pseudolikelihood"</p>
+          <span class="tl-tag tag-talk">Talk</span>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <span class="tl-year">Jun 2025</span>
+        <div class="tl-body">
+          <h3><a href="https://rubenseyer.github.io/SSIAB16/" target="_blank" class="ilink">SSIAB16</a> &mdash; Gothenburg, Sweden</h3>
+          <p>"A magnitude-weighted goodness-of-fit score for earthquake forecasting"</p>
+          <span class="tl-tag tag-talk">Talk</span>
+          <span class="tl-tag tag-org">Local organizing committee</span>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <span class="tl-year">Jan–Mar 2025</span>
+        <div class="tl-body">
+          <h3>Research visit &mdash; <a href="https://statistics.ucla.edu/" target="_blank" class="ilink">UCLA Statistics</a></h3>
+          <p class="inst">Visiting Graduate Researcher</p>
+          <p>Working with <a href="http://www.stat.ucla.edu/~frederic/" target="_blank" class="ilink">Rick Schoenberg</a>'s group on earthquake modeling with spatio-temporal point processes. Speaker at the UCLA Statistics &amp; Data Science seminar (Mar 6) and the graduate student statistics seminar (Feb 6).</p>
+          <span class="tl-tag tag-visit">Research visit</span>
+          <span class="tl-tag tag-talk">Seminar talks</span>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <span class="tl-year">Aug 2024</span>
+        <div class="tl-body">
+          <h3>Research visit &mdash; Aalborg University</h3>
+          <p>Invited talk: "Comparison of Point Process Learning and its special case Takacs-Fiksel estimation"</p>
+          <span class="tl-tag tag-visit">Research visit</span>
+          <span class="tl-tag tag-talk">Invited talk</span>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <span class="tl-year">Mar 2024</span>
+        <div class="tl-body">
+          <h3>Research visit &mdash; Palermo University</h3>
+          <p>Invited talk: "Comparison of Point Process Learning and its special case Takacs-Fiksel estimation"</p>
+          <span class="tl-tag tag-visit">Research visit</span>
+          <span class="tl-tag tag-talk">Invited talk</span>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <span class="tl-year">Sep 2023</span>
+        <div class="tl-body">
+          <h3><a href="https://www.heidelberg-laureate-forum.org/" target="_blank" class="ilink">10th Heidelberg Laureate Forum</a></h3>
+          <p>Selected participant. <a href="https://ecmiindmath.org/2023/10/01/heidelberg-laureate-forum/" target="_blank" class="ilink">Read my blog post</a> about the experience.</p>
+          <span class="tl-tag tag-award">Selected participant</span>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <span class="tl-year">Jun 2023</span>
+        <div class="tl-body">
+          <h3><a href="https://dec.unibocconi.eu/research/extreme-value-analysis-eva-2023" target="_blank" class="ilink">EVA 2023</a> &mdash; Milan, Italy</h3>
+          <p class="inst">Extreme Value Analysis</p>
+          <p>Poster presentation.</p>
+          <span class="tl-tag tag-poster">Poster</span>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <span class="tl-year">Jun 2023</span>
+        <div class="tl-body">
+          <h3><a href="https://nordstat2023.org/" target="_blank" class="ilink">NORDSTAT 2023</a> &mdash; Gothenburg, Sweden</h3>
+          <p>Talk in contributed session "Spatial Point Processes 1": "Point process learning for Gibbs models". Head of the PhD support team (scheduling, IT supervision, internal communication). <a href="https://juliajanssonvalter.wordpress.com/wp-content/uploads/2023/07/c6_jansson.pdf" target="_blank" class="ilink">Slides PDF</a></p>
+          <span class="tl-tag tag-talk">Talk</span>
+          <span class="tl-tag tag-org">Conference organizer</span>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <span class="tl-year">May 2023</span>
+        <div class="tl-body">
+          <h3><a href="https://ssiab15.dyndoc.fr/" target="_blank" class="ilink">SSIAB15</a> &mdash; Grenoble, France</h3>
+          <p>Poster presentation. <a href="https://juliajanssonvalter.wordpress.com/wp-content/uploads/2023/06/poster_20230516.pdf" target="_blank" class="ilink">Poster PDF</a></p>
+          <span class="tl-tag tag-poster">Poster</span>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <span class="tl-year">Jan 2023</span>
+        <div class="tl-body">
+          <h3><a href="https://www.sintef.no/projectweb/geilowinterschool/2023-23rd-geilo-winter-school/" target="_blank" class="ilink">Winter School in Computational Statistics</a> &mdash; Geilo, Norway</h3>
+          <p>Poster presentation of research plan. <a href="https://juliajanssonvalter.wordpress.com/wp-content/uploads/2023/06/ppl_poster.pdf" target="_blank" class="ilink">Poster PDF</a></p>
+          <span class="tl-tag tag-poster">Poster</span>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <span class="tl-year">Aug 2022</span>
+        <div class="tl-body">
+          <h3><a href="https://spatstat.org/Aalborg2022/" target="_blank" class="ilink">Summer School in Spatial Statistics</a> &mdash; Aalborg, Denmark</h3>
+          <span class="tl-tag tag-visit">Summer school</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════ EDUCATION ══════════════════════════════ -->
+<div id="page-education" class="page">
+  <div class="page-header">
+    <h1>Education</h1>
+  </div>
+
+  <section style="padding-top:2rem">
+    <div class="timeline">
+
+      <div class="tl-item">
+        <span class="tl-year">2022–2025</span>
+        <div class="tl-body">
+          <h3>Licentiate of Technology in Mathematical Statistics</h3>
+          <p class="inst">Chalmers University of Technology</p>
+          <p>Licentiate thesis: <a href="https://research.chalmers.se/publication/543953" target="_blank" class="ilink">"Statistical Properties of Point Process Learning for Gibbs Processes"</a>. Licentiate seminar held in January 2025 &mdash; the mid-point of the PhD.</p>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <span class="tl-year">2020–2022</span>
+        <div class="tl-body">
+          <h3>MSc in Engineering Mathematics and Computational Science</h3>
+          <p class="inst">Chalmers University of Technology</p>
+          <p>Thesis: <a href="https://juliajanssonvalter.wordpress.com/wp-content/uploads/2022/10/master_thesis_julia_jansson_220527.pdf" target="_blank" class="ilink">"Complexity of Boolean Functions"</a> with Professor Jeffrey Steif. <a href="https://www.youtube.com/watch?v=T2cd3vUW-tU" target="_blank" class="ilink">Watch presentation video →</a></p>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <span class="tl-year">2020–2021</span>
+        <div class="tl-body">
+          <h3>Exchange year</h3>
+          <p class="inst">ETH Zürich</p>
+          <p>Courses in statistics, finance, and computer science.</p>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <span class="tl-year">2017–2020</span>
+        <div class="tl-body">
+          <h3>BSc in Engineering Mathematics</h3>
+          <p class="inst">Chalmers University of Technology</p>
+          <p>Thesis: <a href="https://juliajanssonvalter.wordpress.com/wp-content/uploads/2022/10/bortom-normalfordelningen.pdf" target="_blank" class="ilink">"Beyond Normal Distribution: Heavy tails of the distribution of total progeny from the Galton-Watson process"</a>, supervised by Professor Serik Sagitov.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════ GRANTS ══════════════════════════════ -->
+<div id="page-grants" class="page">
+  <div class="page-header">
+    <h1>Grants &amp; scholarships</h1>
+  </div>
+
+  <section style="padding-top:2rem">
+    <div class="grant-list">
+
+      <div class="grant-item">
+        <span class="grant-date">Nov 2024</span>
+        <div class="grant-body">
+          <h3>Stiftelsen Nordenskjöldska Swedenborgsfonden</h3>
+          <p>Project: "Modellering av jordbävningar med hjälp av punktprocesser"</p>
+        </div>
+        <span class="grant-amt">55 000 SEK</span>
+      </div>
+
+      <div class="grant-item">
+        <span class="grant-date">Oct 2024</span>
+        <div class="grant-body">
+          <h3>The Foundation Blanceflor</h3>
+          <p>Research visit grant for visiting UCLA, January–March 2025</p>
+        </div>
+        <span class="grant-amt">60 000 SEK</span>
+      </div>
+
+      <div class="grant-item">
+        <span class="grant-date">Sep 2024</span>
+        <div class="grant-body">
+          <h3>Adlerbertska Forskningsstiftelsen</h3>
+          <p>Project: "Modellering av jordbävningar med hjälp av punktprocesser"</p>
+        </div>
+        <span class="grant-amt">127 000 SEK</span>
+      </div>
+
+      <div class="grant-item">
+        <span class="grant-date">Apr 2023</span>
+        <div class="grant-body">
+          <h3>SveFuM</h3>
+          <p>Travel grant for conference in Milan, Italy</p>
+        </div>
+        <span class="grant-amt">20 000 SEK</span>
+      </div>
+
+      <div class="grant-item">
+        <span class="grant-date">Nov 2022</span>
+        <div class="grant-body">
+          <h3>Åforsk</h3>
+          <p>Travel grant (ref. 22-381) for winter school in Geilo, Norway</p>
+        </div>
+        <span class="grant-amt">13 000 SEK</span>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<!-- ══════════════════════════════ TEACHING ══════════════════════════════ -->
+<div id="page-teaching" class="page">
+  <div class="page-header">
+    <h1>Teaching &amp; supervision</h1>
+  </div>
+
+  <section style="padding-top:2rem">
+    <p class="section-label">Supervision</p>
+
+    <p class="level-label">MSc students</p>
+    <div class="supervise-item">
+      <p class="s-name">Mathis Rost</p>
+      <p class="s-meta">2024 &middot; "Data Augmentation for Point Process Learning" &middot; University of Gothenburg<br>Co-supervised with Ottmar Cronie</p>
+    </div>
+
+    <p class="level-label" style="margin-top:1.4rem">BSc students</p>
+    <div class="supervise-item">
+      <p class="s-name">Zihan Chen &amp; Rebecka Ström</p>
+      <p class="s-meta">2024 &middot; "Har tröskeln för antal grannar någon betydelse?" &middot; Chalmers University of Technology</p>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Teaching</p>
+    <div class="teach-block">
+      <div class="teach-row">
+        <span class="teach-name">Applied mathematical statistics <span class="code">LKT325/LMA521</span></span>
+        <span class="teach-years">TA &amp; lecturer &middot; 2023, 2024, 2025</span>
+      </div>
+      <div class="teach-row">
+        <span class="teach-name">Probability and statistics <span class="code">MVE302</span></span>
+        <span class="teach-years">TA &middot; 2023, 2024, 2025</span>
+      </div>
+      <div class="teach-row">
+        <span class="teach-name">Stochastic data processing <span class="code">TMS150</span></span>
+        <span class="teach-years">TA &middot; 2022, 2023</span>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <span>Julia Jansson Valter &middot; Chalmers University of Technology</span>
+  <span><a href="https://orcid.org/0000-0001-7876-9651" target="_blank">ORCID 0000-0001-7876-9651</a></span>
+</footer>
+
+<script>
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('visible'));
+  document.getElementById('page-' + id).classList.add('visible');
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.classList.toggle('active', a.dataset.page === id);
+  });
+  window.scrollTo(0, 0);
+  location.hash = id === 'home' ? '' : id;
+}
+
+(function() {
+  const h = location.hash.replace('#','');
+  const pages = ['home','publications','conferences','education','grants','teaching'];
+  if (h && pages.includes(h)) showPage(h);
+  else { document.querySelector('[data-page="home"]').classList.add('active'); }
+})();
+
+window.addEventListener('hashchange', function() {
+  const h = location.hash.replace('#','');
+  const pages = ['home','publications','conferences','education','grants','teaching'];
+  if (h && pages.includes(h)) showPage(h);
+});
+</script>
+</body>
+</html>
